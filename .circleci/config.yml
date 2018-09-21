@@ -2,24 +2,23 @@ version: 2
 jobs:
   build:
     machine: true
-    environment:
-      ARCH=amd64
-      KUBE_FASTBUILD=true
-      REGISTRY=quay.io/giantswarm
-      VERSION=v1.11.1-$CIRCLE_SHA1-giantswarm
     steps:
     - checkout
     - run:
         name: Fastbuild amd64 release
         command: |
-          bash build/run.sh make cross
+          bash build/run.sh make cross KUBE_FASTBUILD=true ARCH=amd64
     - run:
+        environment:
+          REGISTRY=quay.io/giantswarm
         name: Build docker container
         command: |
           cd cluster/images/hyperkube/
-          make
+          make VERSION=v1.11.1-$CIRCLE_SHA1-giantswarm ARCH=amd64
           docker tag $REGISTRY/hyperkube-amd64:$VERSION $REGISTRY/hyperkube:$VERSION
     - deploy:
+        environment:
+          REGISTRY=quay.io/giantswarm
         name: Deploy (if branch == "v1.11-giantswarm")
         command: |
           if [ "${CIRCLE_BRANCH}" == "v1.11-giantswarm" ]; then
