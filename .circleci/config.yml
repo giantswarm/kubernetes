@@ -14,7 +14,8 @@ jobs:
         name: Build docker container
         command: |
           cd cluster/images/hyperkube/
-          make build VERSION=v1.11.1-$CIRCLE_SHA1-giantswarm ARCH=amd64
+          export VERSION=v1.11.1-$CIRCLE_SHA1-giantswarm
+          make build ARCH=amd64
           docker tag $REGISTRY/hyperkube-amd64:$VERSION $REGISTRY/hyperkube:$VERSION
     - deploy:
         environment:
@@ -22,5 +23,6 @@ jobs:
         name: Deploy (if branch == "v1.11-giantswarm")
         command: |
           if [ "${CIRCLE_BRANCH}" == "v1.11-giantswarm" ]; then
-              docker push $REGISTRY/hyperkube:$VERSION
+              echo -n "$QUAY_PASSWORD" | docker login -u "$QUAY_USERNAME" quay.io/giantswarm
+              docker push $REGISTRY/hyperkube:v1.11.1-$CIRCLE_SHA1-giantswarm
           fi
