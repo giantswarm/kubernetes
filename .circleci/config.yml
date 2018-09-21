@@ -11,7 +11,8 @@ jobs:
     - checkout
     - run:
         name: Fastbuild amd64 release
-        command: bash build/run.sh make cross
+        command: |
+          bash build/run.sh make cross
     - run:
         name: Build docker container
         command: |
