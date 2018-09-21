@@ -10,7 +10,7 @@ jobs:
           bash build/run.sh make cross KUBE_FASTBUILD=true ARCH=amd64
     - run:
         environment:
-          REGISTRY=quay.io/giantswarm
+          REGISTRY: quay.io/giantswarm
         name: Build docker container
         command: |
           cd cluster/images/hyperkube/
@@ -18,7 +18,7 @@ jobs:
           docker tag $REGISTRY/hyperkube-amd64:$VERSION $REGISTRY/hyperkube:$VERSION
     - deploy:
         environment:
-          REGISTRY=quay.io/giantswarm
+          REGISTRY: quay.io/giantswarm
         name: Deploy (if branch == "v1.11-giantswarm")
         command: |
           if [ "${CIRCLE_BRANCH}" == "v1.11-giantswarm" ]; then
