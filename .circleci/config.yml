@@ -23,6 +23,6 @@ jobs:
         name: Deploy (if branch == "v1.11-giantswarm")
         command: |
           if [ "${CIRCLE_BRANCH}" == "v1.11-giantswarm" ]; then
-              echo -n "$QUAY_PASSWORD" | docker login -u "$QUAY_USERNAME" quay.io/giantswarm
+              echo -n "$QUAY_PASSWORD" | docker login -u "$QUAY_USERNAME" --password-stdin quay.io/giantswarm
               docker push $REGISTRY/hyperkube:v1.11.1-$CIRCLE_SHA1-giantswarm
           fi
