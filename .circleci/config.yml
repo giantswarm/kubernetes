@@ -14,7 +14,7 @@ jobs:
         name: Build docker container
         command: |
           cd cluster/images/hyperkube/
-          make VERSION=v1.11.1-$CIRCLE_SHA1-giantswarm ARCH=amd64
+          make build VERSION=v1.11.1-$CIRCLE_SHA1-giantswarm ARCH=amd64
           docker tag $REGISTRY/hyperkube-amd64:$VERSION $REGISTRY/hyperkube:$VERSION
     - deploy:
         environment:
